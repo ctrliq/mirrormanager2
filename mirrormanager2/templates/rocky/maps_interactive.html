@@ -1,9 +1,9 @@
 {# Rocky theme template
-   Source: mirrormanager-rocky/templates/rocky/maps_interactive.html
+Source: mirrormanager-rocky/templates/rocky/maps_interactive.html
 
-   Key changes from Fedora version:
-   - Title: "Fedora Mirrors Map" -> "Rocky Mirrors Map"
-   - Map layer name: "Fedora Mirrors" -> "Rocky Mirrors"
+Key changes from Fedora version:
+- Title: "Fedora Mirrors Map" -> "Rocky Mirrors Map"
+- Map layer name: "Fedora Mirrors" -> "Rocky Mirrors"
 #}
 {% extends "master.html" %}
 
@@ -20,26 +20,26 @@
 <div id="map"></div>
 <script defer="defer" type="text/javascript">
 
-  var map = new OpenLayers.Map ("map");
-  var Osm = new OpenLayers.Layer.OSM("Open Street Map",
-    // Official OSM tileset as protocol-independent URLs
-    [
-      '//a.tile.openstreetmap.org/${z}/${x}/${y}.png',
-      '//b.tile.openstreetmap.org/${z}/${x}/${y}.png',
-      '//c.tile.openstreetmap.org/${z}/${x}/${y}.png'
-    ], null);
+    var map = new OpenLayers.Map("map");
+    var Osm = new OpenLayers.Layer.OSM("Open Street Map",
+        // Official OSM tileset as protocol-independent URLs
+        [
+            '//a.tile.openstreetmap.org/${z}/${x}/${y}.png',
+            '//b.tile.openstreetmap.org/${z}/${x}/${y}.png',
+            '//c.tile.openstreetmap.org/${z}/${x}/${y}.png'
+        ], null);
 
-  map.addLayer(Osm);
+    map.addLayer(Osm);
 
-  {# Rocky: Changed layer name from "Fedora Mirrors" to "Rocky Mirrors" #}
-  var text = new OpenLayers.Layer.Text( "Rocky Mirrors", {location: "{{url_for('base.index')}}map/mirrors_location.txt"} );
-  map.addLayer(text);
-  var lonlat = new OpenLayers.LonLat(-15, 25).transform(
-    new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-    new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator
-  );
+    {# Rocky: Changed layer name from "Fedora Mirrors" to "Rocky Mirrors" # }
+    var text = new OpenLayers.Layer.Text("Rocky Mirrors", { location: "{{url_for('base.index')}}map/mirrors_location.txt" });
+    map.addLayer(text);
+    var lonlat = new OpenLayers.LonLat(-15, 25).transform(
+        new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+        new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator
+    );
 
-  map.setCenter(lonlat, 3);
+    map.setCenter(lonlat, 3);
 
 </script>
 {% endblock %}
