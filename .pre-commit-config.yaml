@@ -6,7 +6,9 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
+        exclude: '(^mirrormanager2/static/fedora/|^mirrormanager2/templates/fedora/)'
       - id: end-of-file-fixer
+        exclude: '(^mirrormanager2/static/fedora/|^mirrormanager2/templates/fedora/)'
       - id: check-yaml
       - id: check-added-large-files
 
@@ -41,3 +43,23 @@ repos:
         require_serial: true
         pass_filenames: false
         verbose: true
+      - id: check-jinja2-templates
+        name: Check Jinja2 template syntax
+        # Validates Jinja2 templates by compiling them with the correct loader
+        # configuration. Templates use relative imports like {% extends "master.html" %}
+        # which need to resolve from the theme directory (rocky/), not the parent
+        # templates/ directory. This catches syntax errors like malformed comment
+        # tags before commit. Only validates Rocky templates since Fedora templates
+        # are kept for reference only.
+        language: python
+        additional_dependencies: [jinja2]
+        entry: python
+        args:
+          - -c
+          - |
+            from jinja2 import Environment, FileSystemLoader
+            import sys
+            env = Environment(loader=FileSystemLoader('mirrormanager2/templates/rocky'))
+            [env.get_template(f.replace('mirrormanager2/templates/rocky/', '')) for f in sys.argv[1:]]
+        files: ^mirrormanager2/templates/rocky/.*\.html$
+        pass_filenames: true
