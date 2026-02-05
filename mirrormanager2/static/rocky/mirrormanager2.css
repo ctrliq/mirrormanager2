@@ -86,3 +86,37 @@ input[type="checkbox"] {
 table.mm2-table-small {
     width: auto;
 }
+
+/* Dark theme adjustments to match Rocky mirrors site */
+[data-bs-theme="dark"] {
+    /* Darker background like official site */
+    --bs-body-bg: #0d1117;
+}
+
+/* Footer links - gray text for visibility */
+[data-bs-theme="dark"] .footer a {
+    color: #8b949e !important;
+}
+
+[data-bs-theme="dark"] .footer a:hover {
+    color: #c9d1d9 !important;
+}
+
+/* Headers - pure white for better contrast */
+[data-bs-theme="dark"] h1,
+[data-bs-theme="dark"] h2,
+[data-bs-theme="dark"] h3,
+[data-bs-theme="dark"] h4,
+[data-bs-theme="dark"] .h4 {
+    color: #ffffff !important;
+}
+
+/* Footer headings */
+[data-bs-theme="dark"] .footer dt {
+    color: #ffffff !important;
+}
+
+/* Footer text (copyright, etc.) */
+[data-bs-theme="dark"] .footer p {
+    color: #8b949e !important;
+}
