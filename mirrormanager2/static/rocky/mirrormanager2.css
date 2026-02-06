@@ -87,11 +87,6 @@ table.mm2-table-small {
     width: auto;
 }
 
-/* Dark theme adjustments to match Rocky mirrors site */
-[data-bs-theme="dark"] {
-    /* Darker background like official site */
-    --bs-body-bg: #0d1117;
-}
 
 /* Footer links - gray text for visibility */
 [data-bs-theme="dark"] .footer a {
