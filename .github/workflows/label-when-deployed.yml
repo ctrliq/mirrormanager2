@@ -14,13 +14,13 @@ jobs:
 
     steps:
       - name: Staging deployment
-        uses: fedora-infra/label-when-in-branch@v1
+        uses: fedora-infra/label-when-in-branch@6ae7bd5f41980fb23e4ff647531e3777f4fa286b # v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: staging
           label: deployed:staging
       - name: Production deployment
-        uses: fedora-infra/label-when-in-branch@v1
+        uses: fedora-infra/label-when-in-branch@6ae7bd5f41980fb23e4ff647531e3777f4fa286b # v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: production
