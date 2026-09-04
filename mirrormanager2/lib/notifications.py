@@ -24,15 +24,19 @@ These methods are used to send email or fedora-messaging message or
 any other notifications we could use.
 """
 
+import logging
 import smtplib
 from email.mime.text import MIMEText
 
 import backoff
 from fedora_messaging.api import publish as fm_publish
+from fedora_messaging.exceptions import BaseException as FedoraMessagingError
 from fedora_messaging.exceptions import ConnectionException, PublishTimeout
 from fedora_messaging.message import Message
 
 from . import model
+
+log = logging.getLogger(__name__)
 
 
 @backoff.on_exception(
@@ -40,9 +44,22 @@ from . import model
     (ConnectionException, PublishTimeout),
     max_tries=3,
 )
-def fedmsg_publish(msg: Message):  # pragma: no cover
-    """Try to publish a message on the fedmsg bus."""
+def _fedmsg_publish(msg: Message):
     fm_publish(msg)
+
+
+def fedmsg_publish(msg: Message):
+    """Try to publish a message on the fedmsg bus.
+
+    This is a fire-and-forget notification: nothing consumes it synchronously,
+    so a broker that is unreachable or misconfigured (even after the retries
+    above are exhausted) must not be allowed to crash the caller - e.g. the
+    crawler, or a web request that already committed its database change.
+    """
+    try:
+        _fedmsg_publish(msg)
+    except FedoraMessagingError:
+        log.exception("Failed to publish message %r", msg)
 
 
 def host_to_message_body(host: model.Host):
